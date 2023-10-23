@@ -1,17 +1,12 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import React from 'react';
+import CadastroEspaco from '../components/cadastrodequadra';
 
-const inter = Inter({ subsets: ['latin'] })
-
-export default function Home() {
+const Home: React.FC = () => {
   return (
-    <main
-     
-    >
-      <div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-900">
+      <CadastroEspaco />
+    </div>
+  );
+};
 
-      </div>
-      
-    </main>
-  )
-}
+export default Home;
