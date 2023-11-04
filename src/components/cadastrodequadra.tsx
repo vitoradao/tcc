@@ -1,6 +1,4 @@
-// components/CadastroEspaco.tsx
-
-import React from 'react';
+import React from "react";
 
 const CadastroEspaco: React.FC = () => {
   return (

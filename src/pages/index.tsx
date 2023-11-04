@@ -1,51 +1,52 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
-import { api } from "@/services/axios"; // Certifique-se de que o módulo api esteja configurado corretamente
+import { api } from "@/services/axios";
 import image from "@/assets/b196_web.jpg";
+import logo from "@/assets/VK_ESPORTES_PRONTA.png";
+
 import { useRouter } from "next/router";
+import { useForm, Controller } from "react-hook-form";
+import Link from "next/link";
+
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+}
 
 export default function Home() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const router = useRouter();
+  const { handleSubmit, control, reset } = useForm<FormData>();
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
+  const onSubmit = async (data: FormData) => {
     try {
-      const response = await api.post("/register", {
-        name,
-        email,
-        password,
-      });
+      const response = await api.post("/register", data);
       console.log(response.data);
       router.push("/home.page");
+      reset();
     } catch (error) {
       console.error(error);
-      setName("");
-      setEmail("");
-      setPassword("");
-      console.log("Algo deu errado animal");
+      console.log("Algo deu errado");
     }
-  }
+  };
 
   return (
     <div className="bg-gray-900 min-h-screen flex items-center justify-center">
       <div className="w-full flex">
-        <div className="w-1/2 h-screen bg-gray-800">
+        <div className="w-1/2 h-screen bg-gray-800 relative">
           <Image
             src={image}
             alt="Imagem de fundo"
             className="w-full h-full object-cover"
           />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Image src={logo} alt="logo" className="max-w-full max-h-full" />
+          </div>
         </div>
 
         <div className="w-1/2 h-full bg-gray-900 p-8 mt-40">
-          <h2 className="text-3xl text-white font-bold mb-8">
-            Tela de Cadastro
-          </h2>
-          <form onSubmit={handleSubmit}>
+          <h2 className="text-3xl text-white font-bold mb-8">Cadastre-se</h2>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-6">
               <label
                 htmlFor="name"
@@ -53,14 +54,17 @@ export default function Home() {
               >
                 Nome:
               </label>
-              <input
-                type="text"
-                id="name"
+              <Controller
                 name="name"
-                placeholder="Seu nome"
-                className="w-full p-3 bg-gray-800 border rounded focus:ring-2 focus:ring-blue-400 text-white"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="text"
+                    placeholder="Seu nome"
+                    className="w-full p-3 bg-gray-800 border rounded focus:ring-2 focus:ring-blue-400 text-white"
+                  />
+                )}
               />
             </div>
             <div className="mb-6">
@@ -70,14 +74,17 @@ export default function Home() {
               >
                 Email:
               </label>
-              <input
-                type="email"
-                id="email"
+              <Controller
                 name="email"
-                placeholder="Seu email"
-                className="w-full p-3 bg-gray-800 border rounded focus:ring-2 focus:ring-blue-400 text-white"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="email"
+                    placeholder="Seu email"
+                    className="w-full p-3 bg-gray-800 border rounded focus:ring-2 focus:ring-blue-400 text-white"
+                  />
+                )}
               />
             </div>
             <div className="mb-6">
@@ -87,16 +94,22 @@ export default function Home() {
               >
                 Senha:
               </label>
-              <input
-                type="password"
-                id="password"
+              <Controller
                 name="password"
-                placeholder="Sua senha"
-                className="w-full p-3 bg-gray-800 border rounded focus:ring-2 focus:ring-blue-400 text-white"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="password"
+                    placeholder="Sua senha"
+                    className="w-full p-3 bg-gray-800 border rounded focus:ring-2 focus:ring-blue-400 text-white"
+                  />
+                )}
               />
             </div>
+            <Link href={"/login"} className="text-blue-600">
+              Ja possui cadastro? Faca seu login
+            </Link>
             <div className="text-center">
               <button
                 type="submit"
