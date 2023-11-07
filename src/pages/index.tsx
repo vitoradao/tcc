@@ -5,7 +5,7 @@ import image from "@/assets/b196_web.jpg";
 import logo from "@/assets/VK_ESPORTES_PRONTA.png";
 
 import { useRouter } from "next/router";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Link from "next/link";
 
 interface FormData {
@@ -16,13 +16,13 @@ interface FormData {
 
 export default function Home() {
   const router = useRouter();
-  const { handleSubmit, control, reset } = useForm<FormData>();
+  const { handleSubmit, register, reset } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
     try {
       const response = await api.post("/register", data);
       console.log(response.data);
-      router.push("/home.page");
+      router.push("/login");
       reset();
     } catch (error) {
       console.error(error);
@@ -54,17 +54,11 @@ export default function Home() {
               >
                 Nome:
               </label>
-              <Controller
-                name="name"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    {...field}
-                    type="text"
-                    placeholder="Seu nome"
-                    className="w-full p-3 bg-gray-800 border rounded focus:ring-2 focus:ring-blue-400 text-white"
-                  />
-                )}
+              <input
+                {...register("name")}
+                type="text"
+                placeholder="Seu nome"
+                className="w-full p-3 bg-gray-800 border rounded focus:ring-2 focus:ring-blue-400 text-white"
               />
             </div>
             <div className="mb-6">
@@ -74,17 +68,11 @@ export default function Home() {
               >
                 Email:
               </label>
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    {...field}
-                    type="email"
-                    placeholder="Seu email"
-                    className="w-full p-3 bg-gray-800 border rounded focus:ring-2 focus:ring-blue-400 text-white"
-                  />
-                )}
+              <input
+                {...register("email")}
+                type="email"
+                placeholder="Seu email"
+                className="w-full p-3 bg-gray-800 border rounded focus:ring-2 focus:ring-blue-400 text-white"
               />
             </div>
             <div className="mb-6">
@@ -94,17 +82,11 @@ export default function Home() {
               >
                 Senha:
               </label>
-              <Controller
-                name="password"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    {...field}
-                    type="password"
-                    placeholder="Sua senha"
-                    className="w-full p-3 bg-gray-800 border rounded focus:ring-2 focus:ring-blue-400 text-white"
-                  />
-                )}
+              <input
+                {...register("password")}
+                type="password"
+                placeholder="Sua senha"
+                className="w-full p-3 bg-gray-800 border rounded focus:ring-2 focus:ring-blue-400 text-white"
               />
             </div>
             <Link href={"/login"} className="text-blue-600">
