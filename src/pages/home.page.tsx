@@ -31,9 +31,9 @@ export default function Home() {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-black font-bold text-2xl">
-                  NOVIDADES
-                </a>
+                 <Link href="/admin/admin" className="text-black font-bold text-2xl">
+                  ADMIN
+                </Link>
               </li>
               <li>
                 <a href="#" className="text-black font-bold text-2xl">

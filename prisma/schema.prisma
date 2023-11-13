@@ -1,5 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Prisma schema file
 
 generator client {
   provider = "prisma-client-js"
@@ -10,10 +9,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Modelo de Usuário
 model User {
-  id Int @id @default(autoincrement())
-  name String 
-  email String @unique
-  password String
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String     @unique
+  password  String     // Recomendado usar String para senhas
+       // Pode ser uma string para suportar diferentes formatos de número de telefone
+  reservations Reservation[]   // Relacionamento com reservas
+
+  courts    Court[]    // Relacionamento com quadras
 }
 
+// Modelo de Quadra
+model Court {
+  id          Int      @id @default(autoincrement())
+  name        String
+  modality    String
+  price       Int
+  description String
+  userId      Int      // Chave estrangeira para o usuário que possui a quadra
+  user        User     @relation(fields: [userId], references: [id])
+  reservations Reservation[] // Relacionamento com reservas
+}
+
+// Modelo de Reserva
+model Reservation {
+  id         Int      @id @default(autoincrement())
+  date       DateTime
+  hour       String
+  situation  String
+  userId     Int      // Chave estrangeira para o usuário que fez a reserva
+  user       User     @relation(fields: [userId], references: [id])
+  courtId    Int      // Chave estrangeira para a quadra reservada
+  court      Court    @relation(fields: [courtId], references: [id])
+}
+
+// Modelo de Administrador
+model Admin {
+  id      Int    @id @default(autoincrement())
+  name    String
+  email   String @unique
+  password String // Recomendado usar String para senhas
+
+
+}
